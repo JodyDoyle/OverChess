@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>OverChess</title>
+
+<h1 id = "head">Demo for my game</h1>
+
+</head>
+
+<body onload = "fturn();">
+
+<p></p>
+
+ <div class="grid-container">
+  <div class="grid-item" id = "A5" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "B5" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "C5" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "D5" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "E5" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "A4" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "B4" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "C4" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "D4" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "E4" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "A3" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "B3" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "C3" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "D3" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "E3" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "A2" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "B2" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "C2" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "D2" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "E2" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "A1" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "B1" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" onclick = "gridclicked(this.id);" id = "C1"></div>
+  <div class="grid-item" id = "D1" onclick = "gridclicked(this.id);"></div>
+  <div class="grid-item" id = "E1" onclick = "gridclicked(this.id);"></div>
+</div> 
+<p id = "select">
+Please select a Creature:
+</p>
+<button type = "button" id = "move1" class = "xer" onclick = "moveclicked(this.id);"></button>
+
+
+
+<button type = "button" id = "move2" class = "xer" onclick = "moveclicked(this.id);"></button>
+
+
+
+<button type = "button" id = "move3" class = "xer" onclick = "moveclicked(this.id);"></button>
+
+
+
+<button type = "button" id = "move4" class = "xer" onclick = "moveclicked(this.id);"></button>
+
+
+
+<button type = "button" id = "move5" class = "xer" onclick = "moveclicked(this.id);"></button>
+
+
+
+<button type = "button" id = "cancel" class = "xer" onclick = "cancelclicked()">Cancel</button>
+
+<p id = 'display1'>
+
+</p>
+
+<p id = 'display2'>
+
+</p>
+
+<p id = 'display3'>
+
+</p>
+
+<p id = 'display4'>
+
+</p>
+
+<p id = 'display5'>
+
+</p>
+
+<p>
+Just a buffer so that we can scroll down
+</p>
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+     
+<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+     
+<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAoh_WXyevTId6_ndy65_J2-eQnnnCX7-Q",
+    authDomain: "unamed-jody-project.firebaseapp.com",
+    databaseURL: "https://unamed-jody-project.firebaseio.com",
+    projectId: "unamed-jody-project",
+    storageBucket: "unamed-jody-project.appspot.com",
+    messagingSenderId: "293495715689",
+    appId: "1:293495715689:web:8acb43cec99831a121aff8",
+    measurementId: "G-1F7SQ49DVC"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  //firebase.analytics();
+  
+  const dbRef = firebase.database().ref();
+  const mov = dbRef.child('Moves');
+  const tra = dbRef.child('Traits');
+  const cre = dbRef.child('Creatures');
+  var curcre = cre.child('Bloba');
+  
+  mov.on("value", function(data) 
+  {
+   					var np = data.val();
+   					console.log("Anchor: " + np.Anchor);
+            //console.log(mov);
+           
+	 });
+  
+</script>
+
+
+</body>
+</html>
