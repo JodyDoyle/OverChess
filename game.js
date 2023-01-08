@@ -18,6 +18,7 @@ var odmgmultiplier = [1, 1, 1, 1, 1];
 var opiecescount = 0;
 var tileselected = '';
 var prevtileselected = '';
+var actualtileselected
 var health = ['500', '-', '-', '-', '-'];
 var ohealth = ['125', '-', '-', '-', '-'];
 var platurn = false;
@@ -154,6 +155,7 @@ function moveclicked(thiss)
 // This function is called whenever the grid is clicked, and it decides what to do with it depending on the value of board.
 function gridclicked(thiss)
 {
+	//console.log("thiss is: " + document.getElementById(thiss).innerHTML)
 	if(board != -1)
   {
   	prevtileselected = tileselected;
@@ -181,9 +183,17 @@ function gridclicked(thiss)
   	
   }
   
-  else if(board == 4) //For when a creature has used slap.
+  else if(board == 4) // For when a creature has used slap.
   {
   	boardslap(thiss);
+  }
+  else if(board == 5) // For when a creature has used firebreath
+  {
+  	boardfirebreath(thiss);
+  }
+  else if(board == 6) // For when a creature has used slither
+  {
+  	boardslither(thiss)
   }
   else if (board == -1)
   {
@@ -199,9 +209,26 @@ function cancelclicked()
   	if(cancelCheck == 1) // For when slap is getting canceled
     {
     	console.log("cancelCheck == 1");
-    	unsslap();
+    	unslap();
       document.getElementById('head').innerHTML = 'Which move would you like to use with this piece?';
-      document.getElementById(tileselected).style.background = '#40ede4';
+      document.getElementById(actualtileselected).style.background = '#40ede4';
+      cancelCheck = 0;
+      board = 1;
+    }
+    else if(cancelCheck == 2) // For when Firebreath is being cancelled
+    {
+    	unfirebreath();
+      document.getElementById('head').innerHTML = 'Which move would you like to use with this piece?';
+      document.getElementById(actualtileselected).style.background = '#40ede4';
+      cancelCheck = 0;
+      board = 1;
+      
+    }
+    else if(cancelCheck == 3) // For when Slither is being cancelled
+    {
+    	unslither();
+      document.getElementById('head').innerHTML = 'Which move would you like to use with this piece?';
+      document.getElementById(actualtileselected).style.background = '#40ede4';
       cancelCheck = 0;
       board = 1;
     }
@@ -345,10 +372,12 @@ function pturns()
 }
 
 
-function pturn()
+function pturn(thiss)
 {
   document.getElementById('head').innerHTML ='Which move would you like to use with this piece?';
 	document.getElementById('select').innerHTML ='Please select a move:';
+  
+  populateMoves(thiss);
   
   document.getElementById('move1').innerHTML = moves[0];
   document.getElementById('move2').innerHTML = moves[1];
@@ -370,6 +399,43 @@ function unpturn()
   document.getElementById('move3').innerHTML = '-';
   document.getElementById('move4').innerHTML = '-';
   document.getElementById('move5').innerHTML = '-';
+}
+
+function populateMoves(thiss)
+{
+	
+  curcre = cre.child(document.getElementById(thiss).innerHTML);
+  cremoves = curcre.child("Moves");
+  
+  // This makes a variable called mar that contains all the moves of the selected creature
+  cremoves.on("value", function(data) 
+  {
+   	var np = data.val();
+   	var mar = ["", "", "", "", ""];
+    mar[0] = np.move1;
+    mar[1] = np.move2;
+    mar[2] = np.move3;
+    mar[3] = np.move4;
+    mar[4] = np.move5;   
+    
+    var i = 0;
+  	while(i<5)
+  	{
+    	if(mar[i] != "")
+    	{
+      	moves[i] = mar[i];
+    	}
+    	else
+    	{
+      	moves[i] = "-";
+    	}
+    	i++;
+  }
+	});
+  
+  
+  
+  
 }
 
 
@@ -447,27 +513,6 @@ function slap(cord)
   {
 		document.getElementById('head').innerHTML = 
   	"Which piece do you wanna slap?";
-  
-   /*
-  
-  	var cordd = '';
-    
-  	cordd = calcgridV(cord, '-', 1);
-    if(cordd != '')
-    {
-    	document.getElementById(cordd).style.background = 'orange';
-    }
-  	
-  
-  	cordd = calcgridV(cord, '+', 1);
-  	document.getElementById(cordd).style.background = 'orange';
-  
-  	cordd = calcgridH(cord, '-', 1);
-  	document.getElementById(cordd).style.background = 'orange';
-  
-  	cordd = calcgridH(cord, '+', 1);
-  	document.getElementById(cordd).style.background = 'orange';
-    */
     
     loopcalcgrid(cord, 1, makeorange);
     
@@ -480,41 +525,51 @@ function slap(cord)
 }
 
 
-function unsslap()
+function unslap() // To undo all the slap stuff when slap executes
 {
-		var cordd = '';
-  	//console.log("The value of thiss in the unslap function is: " + thiss);
-  	cordd = calcgridV(tileselected, '-', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
-  	cordd = calcgridV(tileselected, '+', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
-  	cordd = calcgridH(tileselected, '-', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
-  	cordd = calcgridH(tileselected, '+', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
+    loopcalcgrid(actualtileselected, 1, makegrey);
 }
 
 
-function unslap()
+function firebreath(cord)
 {
-		var cordd = '';
-  	//console.log("The value of thiss in the unslap function is: " + thiss);
-  	cordd = calcgridV(prevtileselected, '-', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
+	document.getElementById('head').innerHTML = 
+  "Which piece do you wanna firebreath?";
+    
+  loopcalcgrid(cord, 2, makeorange);
+    
+  disappearButtons();
+  appear('cancel');
   
-  	cordd = calcgridV(prevtileselected, '+', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
+  board = 5;
+  cancelCheck = 2;
+}
+
+
+function unfirebreath()
+{
+	loopcalcgrid(actualtileselected, 2, makegrey)
+}
+
+
+function slither(cord)
+{
+	document.getElementById('head').innerHTML = 
+  "Where do you wanna slither to?";
+    
+  loopcalcgrid(cord, 2, makeorange);
+    
+  disappearButtons();
+  appear('cancel');
   
-  	cordd = calcgridH(prevtileselected, '-', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
-  	cordd = calcgridH(prevtileselected, '+', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
+  board = 6;
+  cancelCheck = 3;
+}
+
+
+function unslither()
+{
+	loopcalcgrid(actualtileselected, 2, makegrey)
 }
 
 
@@ -930,29 +985,11 @@ function deceotmoves()
 }
 
 
-function movetofunction(movee, fparam)
+function movetofunction(callback, fparam)
 {
 	//console.log("We got to the movetofunction function with the " + movee + " parameter and also the " + fparam + " parameter.")
-	switch(movee) 
-  {
-  	case 'bite':
-    	bite(fparam);
-    	break;
-  	case 'poisonsmoke':
-    	poisonsmoke(fparam);
-      break;
-    case 'slap':
-    	slap(fparam);
-    	break;
-    case 'move':
-    	move(fparam);
-    	break;
-  	case 'anchor':
-    	anchor(fparam);
-      break;
-  	default:
-    	console.log("You either spelled the move or the function wrong probably.")
-	}
+  callback = eval(callback);
+  callback(fparam)
 }
 
 
@@ -1375,10 +1412,11 @@ function selpiece(thiss)
   }
   else if(str == 'orange')
   {
-    document.getElementById(thiss).style.background = '#40ede4'
+    document.getElementById(thiss).style.background = '#40ede4';
     butto = 1;
+    actualtileselected = thiss;
     appearButtons();
-    pturn();
+    pturn(thiss);
   }
   else
   {
@@ -1397,34 +1435,160 @@ async function boardslap(thiss)
     	if (document.getElementById(thiss).innerHTML == '')
       {
       	document.getElementById('head').innerHTML = 
-    		'There is no enemy on this square. :('
+    		'There is no enemy on this square. :(';
       }
       else
       {
-      	ohealth[0] -= 30;
-        unslap();
-        asyncCheck = 0;
-        opdamage();
-        while(true)
+      	
+        // Loops through the opponents until it reaches the enemy that you are slapping
+        str = document.getElementById(thiss).innerHTML;
+        var i = 0;
+        while(i<5)
         {
-        	if(asyncCheck == 1)
+        	if(oparty[i] == str)
           {
-          	asyncCheck = 0;
-            
-          	break;
+          	ohealth[i] -= 30;
+            i = 5;
           }
-          else
-          {
-          	await sleep(500);
-          }
+          
+          i++;
         }
-        if(!gameover)
+        if(i == 6)
+        {
+        	unslap();
+        	asyncCheck = 0;
+        	opdamage();
+        	while(true)
+        	{
+        		if(asyncCheck == 1)
+          	{
+          		asyncCheck = 0;
+            
+          		break;
+          	}
+          	else
+          	{
+          		await sleep(500);
+          	}
+        	}
+        	if(!gameover)
+        	{
+        		document.getElementById('head').innerHTML = 
+    				'Please wait for the opponent to select a move...';
+          	disappear('cancel');
+        		setTimeout(function() { randai(pieces[0]); }, 1800);
+        	}
+        }
+        else
         {
         	document.getElementById('head').innerHTML = 
-    			'Please wait for the opponent to select a move...';
-          disappear('cancel');
-        	setTimeout(function() { randai(pieces[0]); }, 1800);
+    			'There is no enemy on this square. :(';
         }
+        
+      }
+    }
+    else
+    {
+    document.getElementById('head').innerHTML = 
+    'Please choose a valid tile' 
+    }
+}
+
+
+async function boardfirebreath(thiss)
+{
+	var str = document.getElementById(thiss).style.background.substring(0,6);
+    //console.log("str = " + str);
+  	if (str == 'orange')
+    {
+    	if (document.getElementById(thiss).innerHTML == '')
+      {
+      	document.getElementById('head').innerHTML = 
+    		'There is no enemy on this square. :(';
+      }
+      else
+      {
+      	
+        // Loops through the opponents until it reaches the enemy that you are slapping
+        str = document.getElementById(thiss).innerHTML;
+        var i = 0;
+        while(i<5)
+        {
+        	if(oparty[i] == str)
+          {
+          	ohealth[i] -= 40;
+            i = 5;
+          }
+          
+          i++;
+        }
+        if(i == 6)
+        {
+        	unfirebreath();
+        	asyncCheck = 0;
+        	opdamage();
+        	while(true)
+        	{
+        		if(asyncCheck == 1)
+          	{
+          		asyncCheck = 0;
+            
+          		break;
+          	}
+          	else
+          	{
+          		await sleep(500);
+          	}
+        	}
+        	if(!gameover)
+        	{
+        		document.getElementById('head').innerHTML = 
+    				'Please wait for the opponent to select a move...';
+          	disappear('cancel');
+        		setTimeout(function() { randai(pieces[0]); }, 1800);
+        	}
+        }
+        else
+        {
+        	document.getElementById('head').innerHTML = 
+    			'There is no enemy on this square. :(';
+        }
+        
+      }
+    }
+    else
+    {
+    document.getElementById('head').innerHTML = 
+    'Please choose a valid tile' 
+    }
+}
+
+async function boardslither(thiss)
+{
+	var str = document.getElementById(thiss).style.background.substring(0,6);
+    //console.log("str = " + str);
+  	if (str == 'orange')
+    {
+    	if (document.getElementById(thiss).innerHTML != '')
+      {
+      	document.getElementById('head').innerHTML = 
+    		'This square is occupied';
+      }
+      else
+      {
+        // Move the creature to this tile and pass to next turn
+        
+  			
+  			
+  			document.getElementById(actualtileselected).innerHTML = '';
+    		document.getElementById(thiss).innerHTML = selected;
+        pieces[0] = thiss;
+    		document.getElementById('head').innerHTML = 
+    		'Please wait for the opponent to select a move...';
+        unslither();
+    		disappear('cancel');
+    		setTimeout(function() { randai(pieces[0]); }, 1800);
+  			
       }
     }
     else

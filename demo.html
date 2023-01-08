@@ -146,8 +146,8 @@ var butto = 0;
 var curbut = 0;
 var asyncCheck = 0;
 var cancelCheck = 0;
-var party = ['Bloba', '-', '-', '-', '-'];
-var oparty = ['Packun', '-', '-', '-', '-'];
+var party = ['Bloba', 'Red Dragon', '-', '-', '-'];
+var oparty = ['Packun', 'Blue Dog', '-', '-', '-'];
 var moves = ['Anchor', 'Slap', 'Move', '-', '-'];
 var omoves = ['Bite', 'Poison Smoke', '-', '-', '-'];
 var selected = 'Something went wrong!'
@@ -161,6 +161,7 @@ var odmgmultiplier = [1, 1, 1, 1, 1];
 var opiecescount = 0;
 var tileselected = '';
 var prevtileselected = '';
+var actualtileselected
 var health = ['500', '-', '-', '-', '-'];
 var ohealth = ['125', '-', '-', '-', '-'];
 var platurn = false;
@@ -192,46 +193,91 @@ function moveclicked(thiss)
 	//loopcalcgrid('C3', 1, makepurple);
 	if(butto == 0) // This is for when the player is still placing pieces.
   {
-  	selected = document.getElementById(thiss).innerHTML
+  	selected = document.getElementById(thiss).innerHTML;
+    //console.log(curbut);
+    if(curbut != 0)
+    {
+    	document.getElementById(curbut).style.backgroundImage = 'linear-gradient(#a88f8f, #141313)';
+    }
+    
     document.getElementById(thiss).style.background = '#40ede4';
     curbut = thiss;
     
-    document.getElementById('head').innerHTML = 
-    'Where would you like to place ' + selected + '?';
+    if(selected == "-")
+    {
+    	document.getElementById('head').innerHTML = "Please choose a valid creature";
+      
+      // This turns everything grey, I will later need to add a check for where I have already placed creatures
+  		document.getElementById('A1').style.background = 
+    	'#b3b3b3';
+    	document.getElementById('B1').style.background = 
+    	'#b3b3b3';
+    	document.getElementById('D1').style.background = 
+    	'#b3b3b3';
+    	document.getElementById('E1').style.background = 
+    	'#b3b3b3';
+    	document.getElementById('A2').style.background = 
+    	'#b3b3b3';
+    	document.getElementById('B2').style.background = 
+    	'#b3b3b3';
+    	document.getElementById('C2').style.background = 
+    	'#b3b3b3';
+    	document.getElementById('D2').style.background = 
+    	'#b3b3b3';
+    	document.getElementById('E2').style.background = 
+    	'#b3b3b3';
+    }
+    else
+    {
+    	document.getElementById('head').innerHTML = 
+    	'Where would you like to place ' + selected + '?';
   	
-  	document.getElementById('A1').style.background = 
-    'orange';
-    document.getElementById('B1').style.background = 
-    'orange';
-    document.getElementById('D1').style.background = 
-    'orange';
-    document.getElementById('E1').style.background = 
-    'orange';
-    document.getElementById('A2').style.background = 
-    'orange';
-    document.getElementById('B2').style.background = 
-    'orange';
-    document.getElementById('C2').style.background = 
-    'orange';
-    document.getElementById('D2').style.background = 
-    'orange';
-    document.getElementById('E2').style.background = 
-    'orange';
+    	// This turns everything orange, I will later need to add a check for where I have already placed creatures
+  		document.getElementById('A1').style.background = 
+    	'orange';
+    	document.getElementById('B1').style.background = 
+    	'orange';
+    	document.getElementById('D1').style.background = 
+    	'orange';
+    	document.getElementById('E1').style.background = 
+    	'orange';
+    	document.getElementById('A2').style.background = 
+    	'orange';
+    	document.getElementById('B2').style.background = 
+    	'orange';
+    	document.getElementById('C2').style.background = 
+    	'orange';
+    	document.getElementById('D2').style.background = 
+    	'orange';
+    	document.getElementById('E2').style.background = 
+    	'orange';
     
-    board = 0;
-    butto = -2
+    	board = 0;
+    }
+    
+    
+    //butto = -2
   }
   else if(butto == 1) // For when the player is selecting a move
   {
-  	board = -1;
-  	document.getElementById(tileselected).style.background = '#b3b3b3';
   	var temp = document.getElementById(thiss).innerHTML;
-    temp = removespaces(temp); // must remove spaces also.
-    //console.log("The original cord that is sent is " + thiss);
-    movetofunction(temp, tileselected);
+  	if(temp != '-')
+    {
+    	board = -1;
+  		document.getElementById(tileselected).style.background = '#b3b3b3';
+  	
+    	temp = removespaces(temp); // must remove spaces also.
+    	//console.log("The original cord that is sent is " + thiss);
+    	movetofunction(temp, tileselected);
+    }
+    else
+    {
+    	document.getElementById('head').innerHTML = "Please choose a valid move";
+    }
+  	
     
   }
-  
+  // For when you should not be clicking a button
   else if (butto == -1)
   {
   	console.log("You should not be clicking a button rn!");
@@ -239,6 +285,7 @@ function moveclicked(thiss)
   
   else if (butto == -2)
   {
+  	//console.log(curbut);
   	selected = document.getElementById(thiss).innerHTML;
     document.getElementById(curbut).style.backgroundImage = 'linear-gradient(#a88f8f, #141313)';
     curbut = thiss;
@@ -251,6 +298,7 @@ function moveclicked(thiss)
 // This function is called whenever the grid is clicked, and it decides what to do with it depending on the value of board.
 function gridclicked(thiss)
 {
+	//console.log("thiss is: " + document.getElementById(thiss).innerHTML)
 	if(board != -1)
   {
   	prevtileselected = tileselected;
@@ -278,9 +326,17 @@ function gridclicked(thiss)
   	
   }
   
-  else if(board == 4) //For when a creature has used slap.
+  else if(board == 4) // For when a creature has used slap.
   {
   	boardslap(thiss);
+  }
+  else if(board == 5) // For when a creature has used firebreath
+  {
+  	boardfirebreath(thiss);
+  }
+  else if(board == 6) // For when a creature has used slither
+  {
+  	boardslither(thiss)
   }
   else if (board == -1)
   {
@@ -296,9 +352,26 @@ function cancelclicked()
   	if(cancelCheck == 1) // For when slap is getting canceled
     {
     	console.log("cancelCheck == 1");
-    	unsslap();
+    	unslap();
       document.getElementById('head').innerHTML = 'Which move would you like to use with this piece?';
-      document.getElementById(tileselected).style.background = '#40ede4';
+      document.getElementById(actualtileselected).style.background = '#40ede4';
+      cancelCheck = 0;
+      board = 1;
+    }
+    else if(cancelCheck == 2) // For when Firebreath is being cancelled
+    {
+    	unfirebreath();
+      document.getElementById('head').innerHTML = 'Which move would you like to use with this piece?';
+      document.getElementById(actualtileselected).style.background = '#40ede4';
+      cancelCheck = 0;
+      board = 1;
+      
+    }
+    else if(cancelCheck == 3) // For when Slither is being cancelled
+    {
+    	unslither();
+      document.getElementById('head').innerHTML = 'Which move would you like to use with this piece?';
+      document.getElementById(actualtileselected).style.background = '#40ede4';
       cancelCheck = 0;
       board = 1;
     }
@@ -314,10 +387,10 @@ function fturn()
   
   document.getElementById('head').innerHTML = 
   'Which Creature would you like to place first?';
-  console.log("This is what this game thinks pstatus should look like:");
-  console.log(pstatus);
-  console.log("This is what this game thinks ostatus should look like:");
-  console.log(ostatus);
+  //console.log("This is what this game thinks pstatus should look like:");
+  //console.log(pstatus);
+  //console.log("This is what this game thinks ostatus should look like:");
+  //console.log(ostatus);
   
   //loopcalcgrid('E5', 2, makepurple);
   
@@ -337,7 +410,7 @@ function oturn()
 {
 	platurn = false;
   //console.log("The value of tileselected is: " + tileselected);
-  console.log("The value of pieces[0] is: " + pieces[0]);
+  //console.log("The value of pieces[0] is: " + pieces[0]);
   //document.getElementById(tileselected).style.background = 'orange';
   
   var i = 0;
@@ -354,12 +427,12 @@ function oturn()
   'The battle has started! Select a piece.';
   
 	document.getElementById('C4').innerHTML = oparty[0];
-  console.log("This is before the display function call.")
+  //console.log("This is before the display function call.")
   
-  console.log("This is after the display function call.")
+  //console.log("This is after the display function call.")
   opieces[opiecescount] = 'C4';
-  console.log("The value of opieces[opiecescount] is: " + opieces[opiecescount]);
-  console.log("The value of opiecescount is: " + opiecescount);
+  //console.log("The value of opieces[opiecescount] is: " + opieces[opiecescount]);
+  //console.log("The value of opiecescount is: " + opiecescount);
   opiecescount++;
   board = 1;
   
@@ -442,10 +515,12 @@ function pturns()
 }
 
 
-function pturn()
+function pturn(thiss)
 {
   document.getElementById('head').innerHTML ='Which move would you like to use with this piece?';
 	document.getElementById('select').innerHTML ='Please select a move:';
+  
+  populateMoves(thiss);
   
   document.getElementById('move1').innerHTML = moves[0];
   document.getElementById('move2').innerHTML = moves[1];
@@ -467,6 +542,43 @@ function unpturn()
   document.getElementById('move3').innerHTML = '-';
   document.getElementById('move4').innerHTML = '-';
   document.getElementById('move5').innerHTML = '-';
+}
+
+function populateMoves(thiss)
+{
+	
+  curcre = cre.child(document.getElementById(thiss).innerHTML);
+  cremoves = curcre.child("Moves");
+  
+  // This makes a variable called mar that contains all the moves of the selected creature
+  cremoves.on("value", function(data) 
+  {
+   	var np = data.val();
+   	var mar = ["", "", "", "", ""];
+    mar[0] = np.move1;
+    mar[1] = np.move2;
+    mar[2] = np.move3;
+    mar[3] = np.move4;
+    mar[4] = np.move5;   
+    
+    var i = 0;
+  	while(i<5)
+  	{
+    	if(mar[i] != "")
+    	{
+      	moves[i] = mar[i];
+    	}
+    	else
+    	{
+      	moves[i] = "-";
+    	}
+    	i++;
+  }
+	});
+  
+  
+  
+  
 }
 
 
@@ -544,27 +656,6 @@ function slap(cord)
   {
 		document.getElementById('head').innerHTML = 
   	"Which piece do you wanna slap?";
-  
-   /*
-  
-  	var cordd = '';
-    
-  	cordd = calcgridV(cord, '-', 1);
-    if(cordd != '')
-    {
-    	document.getElementById(cordd).style.background = 'orange';
-    }
-  	
-  
-  	cordd = calcgridV(cord, '+', 1);
-  	document.getElementById(cordd).style.background = 'orange';
-  
-  	cordd = calcgridH(cord, '-', 1);
-  	document.getElementById(cordd).style.background = 'orange';
-  
-  	cordd = calcgridH(cord, '+', 1);
-  	document.getElementById(cordd).style.background = 'orange';
-    */
     
     loopcalcgrid(cord, 1, makeorange);
     
@@ -577,41 +668,51 @@ function slap(cord)
 }
 
 
-function unsslap()
+function unslap() // To undo all the slap stuff when slap executes
 {
-		var cordd = '';
-  	//console.log("The value of thiss in the unslap function is: " + thiss);
-  	cordd = calcgridV(tileselected, '-', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
-  	cordd = calcgridV(tileselected, '+', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
-  	cordd = calcgridH(tileselected, '-', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
-  	cordd = calcgridH(tileselected, '+', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
+    loopcalcgrid(actualtileselected, 1, makegrey);
 }
 
 
-function unslap()
+function firebreath(cord)
 {
-		var cordd = '';
-  	//console.log("The value of thiss in the unslap function is: " + thiss);
-  	cordd = calcgridV(prevtileselected, '-', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
+	document.getElementById('head').innerHTML = 
+  "Which piece do you wanna firebreath?";
+    
+  loopcalcgrid(cord, 2, makeorange);
+    
+  disappearButtons();
+  appear('cancel');
   
-  	cordd = calcgridV(prevtileselected, '+', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
+  board = 5;
+  cancelCheck = 2;
+}
+
+
+function unfirebreath()
+{
+	loopcalcgrid(actualtileselected, 2, makegrey)
+}
+
+
+function slither(cord)
+{
+	document.getElementById('head').innerHTML = 
+  "Where do you wanna slither to?";
+    
+  loopcalcgrid(cord, 2, makeorange);
+    
+  disappearButtons();
+  appear('cancel');
   
-  	cordd = calcgridH(prevtileselected, '-', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
-  	cordd = calcgridH(prevtileselected, '+', 1);
-  	document.getElementById(cordd).style.background = '#b3b3b3';
-  
+  board = 6;
+  cancelCheck = 3;
+}
+
+
+function unslither()
+{
+	loopcalcgrid(actualtileselected, 2, makegrey)
 }
 
 
@@ -1027,29 +1128,11 @@ function deceotmoves()
 }
 
 
-function movetofunction(movee, fparam)
+function movetofunction(callback, fparam)
 {
-	console.log("We got to the movetofunction function with the " + movee + " parameter and also the " + fparam + " parameter.")
-	switch(movee) 
-  {
-  	case 'bite':
-    	bite(fparam);
-    	break;
-  	case 'poisonsmoke':
-    	poisonsmoke(fparam);
-      break;
-    case 'slap':
-    	slap(fparam);
-    	break;
-    case 'move':
-    	move(fparam);
-    	break;
-  	case 'anchor':
-    	anchor(fparam);
-      break;
-  	default:
-    	console.log("You either spelled the move or the function wrong probably.")
-	}
+	//console.log("We got to the movetofunction function with the " + movee + " parameter and also the " + fparam + " parameter.")
+  callback = eval(callback);
+  callback(fparam)
 }
 
 
@@ -1198,7 +1281,8 @@ function calcgridH(cord, plus, num)
 function display(str)
 {
 	var helix = health[0];
-  //console.log("str = " + str);
+  
+  // I need to change this to check for whether the creature is the player's or the opponent's.
 	if (str == 'Packun')
   {
   	helix = ohealth[0];
@@ -1245,7 +1329,7 @@ function display(str)
 function anchorEffect(cord, turns)
 {
 	// need to code it so that if the turns are 0, it changes the dmg multiplier
-  // need to access to appropriate dmg multiplier by using the coordinate of the piece
+  // need to access appropriate dmg multiplier by using the coordinate of the piece
   
   var i = 0;
   var x = 0;
@@ -1427,42 +1511,35 @@ function plapieces(thiss, check)
   
 function selpiece(thiss)
 {
-	//console.log(document.getElementById(thiss).innerHTML);
-    //console.log("The value of prevtileselected.style.background is : " + document.getElementById(prevtileselected).style.background);
     
-    //console.log("The value of prevtileselected is : " + document.getElementById(prevtileselected));
+  document.getElementById('head').innerHTML = 'Please select a piece.';
+  var i = 0;
     
-    document.getElementById('head').innerHTML = 
-      'Please select a piece.';
-    
-    //var s = document.getElementById(prevtileselected).innerHTML;
-    var i = 0;
-    
-    
-    if (document.getElementById(prevtileselected).style.background.substring(0,17) == 'rgb(64, 237, 228)')
-    {
+   
+  if (document.getElementById(prevtileselected).style.background.substring(0,17) == 'rgb(64, 237, 228)')
+  {
     document.getElementById(prevtileselected).style.background = '#b3b3b3';
-    }
-    
-    //console.log("The value of s is: " + s);
-    while(i < 5)
+  }
+  
+  // This sets the all of the pieces the player owns to orange (selectable)
+  while(i < 5)
+  {
+    console.log("The value of pieces[" + i + "] is: " + pieces[i]);
+    if(prevtileselected == pieces[i])
     {
-    	console.log("The value of pieces[" + i + "] is: " + pieces[i]);
-    	if(prevtileselected == pieces[i])
-      {
-      	document.getElementById(prevtileselected).style.background = 'orange';
-      }
-      i++;
+      document.getElementById(prevtileselected).style.background = 'orange';
     }
+    i++;
+  }
     
     
-    var str = document.getElementById(thiss).style.background.substring(0,6);
+  var str = document.getElementById(thiss).style.background.substring(0,6);
     
-    if(document.getElementById(thiss).innerHTML != '')
-    {
-    	document.getElementById(thiss).style.background = '#40ede4';
-    	display(document.getElementById(thiss).innerHTML);
-    }
+  if(document.getElementById(thiss).innerHTML != '')
+  {
+    document.getElementById(thiss).style.background = '#40ede4';
+    display(document.getElementById(thiss).innerHTML);
+  }
     
     // I have to make it so that only one tile can be selected 
     // (#40ede4), and also distinguish between a player's piece
@@ -1470,28 +1547,25 @@ function selpiece(thiss)
     // It would probably be best to use the tileselected variable.
     
     //console.log(str);
-  	if(str != 'orange' && document.getElementById(thiss).innerHTML == '')
-    {
-    	unpturn();
-      disappearButtons();
-    	document.getElementById('head').innerHTML = 
-      'Please choose a valid tile.';
-      
-    }
-    else if(str == 'orange')
-    {
-    	document.getElementById(thiss).style.background = '#40ede4'
-      butto = 1;
-      //board = -1;
-      //console.log("We got to the pturn() function call");
-      appearButtons();
-    	pturn();
-    }
-    else
-    {
-    	unpturn();
-      disappearButtons();
-    }
+  if(str != 'orange' && document.getElementById(thiss).innerHTML == '')
+  {
+    unpturn();
+    disappearButtons();
+    document.getElementById('head').innerHTML = 'Please choose a valid tile.';
+  }
+  else if(str == 'orange')
+  {
+    document.getElementById(thiss).style.background = '#40ede4';
+    butto = 1;
+    actualtileselected = thiss;
+    appearButtons();
+    pturn(thiss);
+  }
+  else
+  {
+    unpturn();
+    disappearButtons();
+  }
 }
 
 
@@ -1504,34 +1578,160 @@ async function boardslap(thiss)
     	if (document.getElementById(thiss).innerHTML == '')
       {
       	document.getElementById('head').innerHTML = 
-    		'There is no enemy on this square. :('
+    		'There is no enemy on this square. :(';
       }
       else
       {
-      	ohealth[0] -= 30;
-        unslap();
-        asyncCheck = 0;
-        opdamage();
-        while(true)
+      	
+        // Loops through the opponents until it reaches the enemy that you are slapping
+        str = document.getElementById(thiss).innerHTML;
+        var i = 0;
+        while(i<5)
         {
-        	if(asyncCheck == 1)
+        	if(oparty[i] == str)
           {
-          	asyncCheck = 0;
-            
-          	break;
+          	ohealth[i] -= 30;
+            i = 5;
           }
-          else
-          {
-          	await sleep(500);
-          }
+          
+          i++;
         }
-        if(!gameover)
+        if(i == 6)
+        {
+        	unslap();
+        	asyncCheck = 0;
+        	opdamage();
+        	while(true)
+        	{
+        		if(asyncCheck == 1)
+          	{
+          		asyncCheck = 0;
+            
+          		break;
+          	}
+          	else
+          	{
+          		await sleep(500);
+          	}
+        	}
+        	if(!gameover)
+        	{
+        		document.getElementById('head').innerHTML = 
+    				'Please wait for the opponent to select a move...';
+          	disappear('cancel');
+        		setTimeout(function() { randai(pieces[0]); }, 1800);
+        	}
+        }
+        else
         {
         	document.getElementById('head').innerHTML = 
-    			'Please wait for the opponent to select a move...';
-          disappear('cancel');
-        	setTimeout(function() { randai(pieces[0]); }, 1800);
+    			'There is no enemy on this square. :(';
         }
+        
+      }
+    }
+    else
+    {
+    document.getElementById('head').innerHTML = 
+    'Please choose a valid tile' 
+    }
+}
+
+
+async function boardfirebreath(thiss)
+{
+	var str = document.getElementById(thiss).style.background.substring(0,6);
+    //console.log("str = " + str);
+  	if (str == 'orange')
+    {
+    	if (document.getElementById(thiss).innerHTML == '')
+      {
+      	document.getElementById('head').innerHTML = 
+    		'There is no enemy on this square. :(';
+      }
+      else
+      {
+      	
+        // Loops through the opponents until it reaches the enemy that you are slapping
+        str = document.getElementById(thiss).innerHTML;
+        var i = 0;
+        while(i<5)
+        {
+        	if(oparty[i] == str)
+          {
+          	ohealth[i] -= 40;
+            i = 5;
+          }
+          
+          i++;
+        }
+        if(i == 6)
+        {
+        	unfirebreath();
+        	asyncCheck = 0;
+        	opdamage();
+        	while(true)
+        	{
+        		if(asyncCheck == 1)
+          	{
+          		asyncCheck = 0;
+            
+          		break;
+          	}
+          	else
+          	{
+          		await sleep(500);
+          	}
+        	}
+        	if(!gameover)
+        	{
+        		document.getElementById('head').innerHTML = 
+    				'Please wait for the opponent to select a move...';
+          	disappear('cancel');
+        		setTimeout(function() { randai(pieces[0]); }, 1800);
+        	}
+        }
+        else
+        {
+        	document.getElementById('head').innerHTML = 
+    			'There is no enemy on this square. :(';
+        }
+        
+      }
+    }
+    else
+    {
+    document.getElementById('head').innerHTML = 
+    'Please choose a valid tile' 
+    }
+}
+
+async function boardslither(thiss)
+{
+	var str = document.getElementById(thiss).style.background.substring(0,6);
+    //console.log("str = " + str);
+  	if (str == 'orange')
+    {
+    	if (document.getElementById(thiss).innerHTML != '')
+      {
+      	document.getElementById('head').innerHTML = 
+    		'This square is occupied';
+      }
+      else
+      {
+        // Move the creature to this tile and pass to next turn
+        
+  			
+  			
+  			document.getElementById(actualtileselected).innerHTML = '';
+    		document.getElementById(thiss).innerHTML = selected;
+        pieces[0] = thiss;
+    		document.getElementById('head').innerHTML = 
+    		'Please wait for the opponent to select a move...';
+        unslither();
+    		disappear('cancel');
+    		setTimeout(function() { randai(pieces[0]); }, 1800);
+  			
       }
     }
     else
@@ -1660,7 +1860,7 @@ function playerwin()
 body {
   
   background-color: #502442;
-  background-image: /Pictures/rusticCastleBackground.jpg;
+  background-image: Pictures/rusticCastleBackground;
 
 }
 
