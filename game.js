@@ -1,49 +1,3 @@
-var board = -1;
-var butto = 0;
-var curbut = 0;
-var asyncCheck = 0;
-var cancelCheck = 0;
-var party = ['Bloba', 'Red Dragon', '-', '-', '-'];
-var oparty = ['Packun', 'Blue Dog', '-', '-', '-'];
-var moves = ['Anchor', 'Slap', 'Move', '-', '-'];
-var omoves = ['Bite', 'Poison Smoke', '-', '-', '-'];
-var selected = 'Something went wrong!'
-var tcord = 'C1';
-var otcord = 'C5';
-var pieces = ['-', '-', '-', '-', '-'];
-var dmgmultiplier = [1, 1, 1, 1, 1];
-var piecescount = 0;
-var opieces = ['-', '-', '-', '-', '-'];
-var odmgmultiplier = [1, 1, 1, 1, 1];
-var opiecescount = 0;
-var tileselected = '';
-var prevtileselected = '';
-var actualtileselected
-var health = ['500', '-', '-', '-', '-'];
-var ohealth = ['125', '-', '-', '-', '-'];
-var platurn = false;
-var gameover = false;
-var h = '';
-var t = '';
-var cheer = '';
-var playerName = 'Jim9174';
-var activeEffects = [[]];
-var pstatus = [
-[0,0,0,0,0], // This is for poison
-[0,0,0,0,0], // Haven't decided
-[0,0,0,0,0],
-[0,0,0,0,0],
-[0,0,0,0,0]
-];
-var ostatus = [
-[0,0,0,0,0], // This is for poison
-[0,0,0,0,0], // Haven't decided
-[0,0,0,0,0],
-[0,0,0,0,0],
-[0,0,0,0,0]
-];
-
-
 // This function is called whenever a move button is clicked, and it decides what to do with it depending on the value of butto.
 function moveclicked(thiss)
 {
@@ -54,13 +8,20 @@ function moveclicked(thiss)
     //console.log(curbut);
     if(curbut != 0)
     {
-    	document.getElementById(curbut).style.backgroundImage = 'linear-gradient(#a88f8f, #141313)';
+      if(document.getElementById(curbut).classList == 'xer')
+      {
+        document.getElementById(curbut).style.backgroundImage = 'linear-gradient(#a88f8f, #141313)';
+      }
+      else
+      {
+        document.getElementById(curbut).style.backgroundImage = 'linear-gradient(#9c9c9c, #555555)';
+      }
     }
     
     document.getElementById(thiss).style.background = '#40ede4';
     curbut = thiss;
     
-    if(selected == "-")
+    if(document.getElementById(thiss).classList == 'xerr')
     {
     	document.getElementById('head').innerHTML = "Please choose a valid creature";
       
@@ -88,26 +49,13 @@ function moveclicked(thiss)
     {
     	document.getElementById('head').innerHTML = 
     	'Where would you like to place ' + selected + '?';
-  	
-    	// This turns everything orange, I will later need to add a check for where I have already placed creatures
-  		document.getElementById('A1').style.background = 
-    	'orange';
-    	document.getElementById('B1').style.background = 
-    	'orange';
-    	document.getElementById('D1').style.background = 
-    	'orange';
-    	document.getElementById('E1').style.background = 
-    	'orange';
-    	document.getElementById('A2').style.background = 
-    	'orange';
-    	document.getElementById('B2').style.background = 
-    	'orange';
-    	document.getElementById('C2').style.background = 
-    	'orange';
-    	document.getElementById('D2').style.background = 
-    	'orange';
-    	document.getElementById('E2').style.background = 
-    	'orange';
+
+      var i = 0;
+      while(i<placeable.length)
+      {
+        document.getElementById(placeable[i]).style.background = 'orange';
+        i++;
+      }
     
     	board = 0;
     }
@@ -121,6 +69,7 @@ function moveclicked(thiss)
   	if(temp != '-')
     {
     	board = -1;
+      console.log("moveclicked is the problem!");
   		document.getElementById(tileselected).style.background = '#b3b3b3';
   	
     	temp = removespaces(temp); // must remove spaces also.
@@ -200,7 +149,7 @@ function gridclicked(thiss)
   	console.log("You should not be clicking the grid rn!");
   }
   
-  }
+}
   
   
 // This function is called when the cancel button is clicked and cancels the move that was selected.
@@ -250,6 +199,55 @@ function fturn()
   //console.log(ostatus);
   
   //loopcalcgrid('E5', 2, makepurple);
+
+  while(partynumber<=5)
+  {
+    partynumber++;
+    console.log("party[partynumber] is " + party[partynumber]);
+    if(party[partynumber]=='-')
+      break;
+  }
+
+  var movv = 'move';
+  /*
+  document.getElementById('move1').innerHTML = party[0];
+  document.getElementById('move2').innerHTML = party[1];
+  document.getElementById('move3').innerHTML = party[2];
+  document.getElementById('move4').innerHTML = party[3];
+  document.getElementById('move5').innerHTML = party[4];
+  */
+  var i = 0;
+  while(i<5)
+  {
+    document.getElementById(movv + (i+1)).innerHTML = party[i];
+    if(party[i] == '-')
+    {
+      document.getElementById(movv + (i+1)).classList = 'xerr';
+    }
+    i++;
+  }
+  
+  document.getElementById('cancel').style.display = 'none';
+  
+  //console.log("We got to the fturn function");
+}
+
+
+function nexturn()
+{
+  butto = 0;
+  board = -1;
+  console.log("nexturn is the problem!");
+  appearButtons();
+  console.log("Buttons are appearing in the nexturn function!");
+  document.getElementById('head').innerHTML = 
+  'Which Creature would you like to place next?';
+  //console.log("This is what this game thinks pstatus should look like:");
+  //console.log(pstatus);
+  //console.log("This is what this game thinks ostatus should look like:");
+  //console.log(ostatus);
+  
+  //loopcalcgrid('E5', 2, makepurple);
   
   document.getElementById('move1').innerHTML = party[0];
   document.getElementById('move2').innerHTML = party[1];
@@ -258,8 +256,6 @@ function fturn()
   document.getElementById('move5').innerHTML = party[4];
   
   document.getElementById('cancel').style.display = 'none';
-  
-  //console.log("We got to the fturn function");
 }
 
 
@@ -270,12 +266,14 @@ function oturn()
   //console.log("The value of pieces[0] is: " + pieces[0]);
   //document.getElementById(tileselected).style.background = 'orange';
   
+  /*
   var i = 0;
   while(i<piecescount)
   {
   	document.getElementById(pieces[i]).style.background = 'orange';
     i++;
   }
+  */
   
   //pieces[piecescount] = tileselected;
   //piecescount++;
@@ -291,7 +289,18 @@ function oturn()
   //console.log("The value of opieces[opiecescount] is: " + opieces[opiecescount]);
   //console.log("The value of opiecescount is: " + opiecescount);
   opiecescount++;
-  board = 1;
+  console.log("The value of pieces.length is " + pieces.length);
+  console.log("The value of piecescount is " + piecescount);
+  
+  if(piecescount == partynumber)
+  {
+    board = 1;
+  }
+  else
+  {
+    nexturn();
+  }
+  
   
   
   /*
@@ -328,7 +337,7 @@ async function beforepturns()
     {
     	pturns();
       asyncCheck = 0;
-      console.log("Ah for god sake, how did we get in here and not escape the loop??????????????");
+      //console.log("Ah for god sake, how did we get in here and not escape the loop??????????????");
       break;
     }
     else
@@ -348,13 +357,15 @@ function pturns()
 	console.log("We got to the pturns() function");
 	document.getElementById('select').innerHTML ='Please select a piece.';
   document.getElementById('head').innerHTML ='Please select a piece.';
-  
+  changepiecescolour('orange');
+
+  /*
   var i = 0;
   while(i<5)
   {
-  	if(pieces[i] != '-')
+  	if(pieces[i] != undefined && pieces[i] != '-')
     {
-    	console.log("pieces[" + i + "] = " + pieces[i]);
+    	//console.log("pieces[" + i + "] = " + pieces[i]);
   		document.getElementById(pieces[i]).style.background = 'orange';
     }
     i++;
@@ -496,10 +507,11 @@ function move(cord)
   {
   	document.getElementById(cord).innerHTML = '';
     document.getElementById(newcord).innerHTML = selected;
-    pieces[0] = newcord;
+    pieces[pieces.indexOf(cord)] = newcord;
     document.getElementById('head').innerHTML = 
     'Please wait for the opponent to select a move...';
     disappearButtons();
+    changepiecescolour('#b3b3b3');
     setTimeout(function() { randai(pieces[0]); }, 1800);
   }
 }
@@ -927,7 +939,18 @@ async function randai(cord)
   var tempp = removespaces(temppp);
   //console.log("The value of tempp is: " + tempp);
   //console.log("The value of cord is: " + cord);
-  document.getElementById(tileselected).style.background = '#b3b3b3'
+  //document.getElementById(tileselected).style.background = '#b3b3b3'
+  var i = 0;
+  console.log("pieces[" + i + "] = " + pieces[i]);
+  while(i<5)
+  {
+  	if(pieces[i] != undefined && pieces[i] != '-')
+    {
+    	console.log("pieces[" + i + "] = " + pieces[i]);
+  		document.getElementById(pieces[i]).style.background = '#b3b3b3';
+    }
+    i++;
+  }
   
   movetofunction(tempp, cord);
   
@@ -1138,7 +1161,6 @@ function calcgridH(cord, plus, num)
 function display(str)
 {
 	var helix = health[0];
-  
   // I need to change this to check for whether the creature is the player's or the opponent's.
 	if (str == 'Packun')
   {
@@ -1146,8 +1168,9 @@ function display(str)
   }
   
   
-  
   curcre = cre.child(str)
+
+  
   
   curcre.on("value", function(data) 
   {
@@ -1156,12 +1179,15 @@ function display(str)
     t = np.Trait
     
 	});
+
+  //console.log("Everything is fine???");
   
   //console.log("The value of h is " + h);
   //console.log("The value of t is " + t);
-  
+  console.log("The value of tra: " + tra);
   var traa = tra.child(t);
-  // console.log("The value of traa: " + traa);
+  //console.log("Everything is fine???");
+  console.log("The value of traa: " + traa);
   
   traa.on("value", function(data) 
   {
@@ -1306,64 +1332,67 @@ function decrementEffects()
 
 function plapieces(thiss, check)
 {
-		platurn = true;
-    if(selected == '-')
-    {
-    	document.getElementbyId('head').innerHTML = 'Please select a valid piece.';
-    }
-  	else if(check == '' && document.getElementById(thiss).innerHTML == '')
-    {
-    	document.getElementById(curbut).style.backgroundImage = 'linear-gradient(#a88f8f, #141313)';
-  		document.getElementById(thiss).innerHTML = selected
-    	pieces[piecescount] = thiss;
-    	piecescount++;
-      curcre = cre.child(selected);
-      
-      
-      curcre.on("value", function(data) 
-  		{
-   			var np = data.val();
-   			if(platurn)
-        {
-        	health[piecescount] = np.Health;
-        }
-        else
-        {
-        	console.log("We are assigning ohealth in the plapieces function with the piecescount value of: " + piecescount);
-        	ohealth[piecescount] = np.Health;
-        }
-           
-	 		});
-      
-      console.log('The value of health[piecescount] is ' + health[piecescount]);
-      console.log('The value of ohealth[piecescount] is ' + ohealth[piecescount]);
-    	
-      disappearButtons();
-    	document.getElementById('A1').style.background = '#b3b3b3';
-    	document.getElementById('B1').style.background = '#b3b3b3';
-    	document.getElementById('D1').style.background = '#b3b3b3';
-    	document.getElementById('E1').style.background = '#b3b3b3';
-    	document.getElementById('A2').style.background = '#b3b3b3';
-    	document.getElementById('B2').style.background = '#b3b3b3';
-    	document.getElementById('C2').style.background = '#b3b3b3';
-    	document.getElementById('D2').style.background = '#b3b3b3';
-    	document.getElementById('E2').style.background = '#b3b3b3';
-    	board = -1;
-      
-    	document.getElementById('head').innerHTML =
-      'Your opponent is selecting, please wait...';
-    	setTimeout(oturn, 1800);
-    
-    }
-    else if(check == '' && document.getElementById(thiss).innerHTML != '')
-    {
-    	display(document.getElementById(thiss).innerHTML);
-    }
-    else
-    {
-    	document.getElementById('head').innerHTML = "Please choose a valid tile"
-    }
+	platurn = true;
+  if(selected == '-')
+  {
+    document.getElementbyId('head').innerHTML = 'Please select a valid piece.';
   }
+  else if(check == '' && document.getElementById(thiss).innerHTML == '')
+  {
+    document.getElementById(curbut).style.backgroundImage = 'linear-gradient(#9c9c9c, #555555)';
+    document.getElementById(curbut).classList = 'xerr';
+  	document.getElementById(thiss).innerHTML = selected
+    pieces[piecescount] = thiss;
+    piecescount++;
+    var index = placeable.indexOf(thiss);
+    placeable.splice(index,1);
+    curcre = cre.child(selected);
+      
+    curcre.on("value", function(data) 
+  	{
+   		var np = data.val();
+   		if(platurn)
+      {
+        health[piecescount] = np.Health;
+      }
+      else
+      {
+        console.log("We are assigning ohealth in the plapieces function with the piecescount value of: " + piecescount);
+        ohealth[piecescount] = np.Health;
+      }
+           
+	 	});
+      
+    console.log('The value of health[piecescount] is ' + health[piecescount]);
+    console.log('The value of ohealth[piecescount] is ' + ohealth[piecescount]);
+    	
+    disappearButtons();
+    document.getElementById('A1').style.background = '#b3b3b3';
+    document.getElementById('B1').style.background = '#b3b3b3';
+    document.getElementById('D1').style.background = '#b3b3b3';
+    document.getElementById('E1').style.background = '#b3b3b3';
+    document.getElementById('A2').style.background = '#b3b3b3';
+    document.getElementById('B2').style.background = '#b3b3b3';
+    document.getElementById('C2').style.background = '#b3b3b3';
+    document.getElementById('D2').style.background = '#b3b3b3';
+    document.getElementById('E2').style.background = '#b3b3b3';
+    board = -1;
+    //console.log("plapieces is the problem!");
+      
+    document.getElementById('head').innerHTML =
+    'Your opponent is selecting, please wait...';
+    setTimeout(oturn, 1800);
+    
+  }
+  else if(check == '' && document.getElementById(thiss).innerHTML != '')
+  {
+  	display(document.getElementById(thiss).innerHTML);
+  }
+  else
+  {
+  	document.getElementById('head').innerHTML = "Please choose a valid tile"
+  }
+}
   
   
 function selpiece(thiss)
@@ -1476,6 +1505,7 @@ async function boardslap(thiss)
         		document.getElementById('head').innerHTML = 
     				'Please wait for the opponent to select a move...';
           	disappear('cancel');
+            changepiecescolour('#b3b3b3');
         		setTimeout(function() { randai(pieces[0]); }, 1800);
         	}
         }
@@ -1545,6 +1575,7 @@ async function boardfirebreath(thiss)
         		document.getElementById('head').innerHTML = 
     				'Please wait for the opponent to select a move...';
           	disappear('cancel');
+            changepiecescolour('#b3b3b3');
         		setTimeout(function() { randai(pieces[0]); }, 1800);
         	}
         }
@@ -1563,6 +1594,7 @@ async function boardfirebreath(thiss)
     }
 }
 
+
 async function boardslither(thiss)
 {
 	var str = document.getElementById(thiss).style.background.substring(0,6);
@@ -1580,13 +1612,14 @@ async function boardslither(thiss)
         
   			
   			
+    		document.getElementById(thiss).innerHTML = document.getElementById(actualtileselected).innerHTML;
   			document.getElementById(actualtileselected).innerHTML = '';
-    		document.getElementById(thiss).innerHTML = selected;
-        pieces[0] = thiss;
+        pieces[pieces.indexOf(actualtileselected)] = thiss;
     		document.getElementById('head').innerHTML = 
     		'Please wait for the opponent to select a move...';
         unslither();
     		disappear('cancel');
+        changepiecescolour('#b3b3b3');
     		setTimeout(function() { randai(pieces[0]); }, 1800);
   			
       }
@@ -1596,6 +1629,20 @@ async function boardslither(thiss)
     document.getElementById('head').innerHTML = 
     'Please choose a valid tile' 
     }
+}
+
+function changepiecescolour(colo)
+{
+  var i = 0;
+  while(i<5)
+  {
+  	if(pieces[i] != undefined && pieces[i] != '-')
+    {
+    	console.log("pieces[" + i + "] = " + pieces[i]);
+  		document.getElementById(pieces[i]).style.background = colo;
+    }
+    i++;
+  }
 }
 
 
@@ -1698,5 +1745,6 @@ function playerwin()
   gameover = true;
   asyncCheck = 1;
   board = -1;
+  console.log("playerwin is the problem?");
   butto = -1
 }
