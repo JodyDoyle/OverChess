@@ -124,8 +124,7 @@ Just a buffer so that we can scroll down
   const tra = dbRef.child('Traits');
   const cre = dbRef.child('Creatures');
   var curcre = cre.child('Bloba');
-
-  console.log(tra)
+  var curtra = tra.child('Ingrain');
   
   mov.on("value", function(data) 
   {
@@ -149,7 +148,25 @@ Just a buffer so that we can scroll down
 <script src="reverseMoveFunctions.js">
 </script>
 
-<script src="game.js">
+<script src="miscelaneous.js">
+</script>
+
+<script src="calcGridFunctions.js">
+</script>
+
+<script src="endOfTurnFunctions.js">
+</script>
+
+<script src="colorChanger.js">
+</script>
+
+<script src="poisonHandler.js">
+</script>
+
+<script src="disappear.js">
+</script>
+
+<script src="turnHandler.js">
 </script>
 
 </body>
