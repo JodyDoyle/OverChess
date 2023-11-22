@@ -36,7 +36,9 @@ Overchess
 
 - I fixed a lot of the code so that it works with adding more creatures to the game, need to fix the player death function so that the opponent can kill player's creatures
 
+22/11/2023
 
+- I built the player damage and player death functions, still some bugs with it especially around the poison damage messaging.
 
 
 
@@ -92,6 +94,17 @@ Problems(4):
 - I need to code the moves for blue dog
 
 - I need to make it so that a random one of the opponents piecs makes a move (Not always just packun)
+
+
+Problems(5):
+
+- I need to sort out the sequencing of the 'hurt by poison' messaging so that it doesn't show when it's not supposed to
+
+- Apparantly when a creature dies it says a different creature dies
+
+- Sometimes my creatures still turn into the other creature (very rare, hard to recreate, could be related to the last point)
+
+- Still need to program Blue dog's moves and for him to use them sometimes
 
 
 

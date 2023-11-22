@@ -360,17 +360,18 @@ function bite(cord)
       var x = Math.floor(Math.random() * count)
       var y = pieces.indexOf(corddd[x]);
       health[y] = health[y] - 70;
+      pladamage();
       //console.log("the value of cord is: (Should be C4) " + cord)
       //console.log("the value of x is: (Should be 0 or 1) " + x)
       //console.log("the value of y is: (Should be 0 or 1) " + y)
       //console.log("The value of corddd[x] is " + corddd[x]);
-      document.getElementById('head').innerHTML = 
-      "The Packun used bite and bit " + document.getElementById(corddd[x]).innerHTML + "! Chomp!";
+      document.getElementById('head').innerHTML = "The Packun used bite and bit " + document.getElementById(corddd[x]).innerHTML + "! Chomp!";
+      
       //console.log("This code executes after");
     }
     
   }
-  setTimeout(beforepturns, 1800);
+  setTimeout(pturns, 1800);
 }
 
 

@@ -141,7 +141,7 @@ function pturns()
 {
 	//display('Packun');
   
-	//console.log("We got to the pturns() function");
+	console.log("We got to the pturns() function");
 	document.getElementById('select').innerHTML ='Please select a piece.';
   document.getElementById('head').innerHTML ='Please select a piece.';
   changepiecescolour('orange');

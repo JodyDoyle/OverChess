@@ -116,6 +116,26 @@ function playerwin()
   gameover = true;
   asyncCheck = 1;
   board = -1;
-  console.log("playerwin is the problem?");
+  //console.log("playerwin is the problem?");
+  butto = -1
+}
+
+
+function opponentwin()
+{
+	console.log("We got to the opponentwin() function!");
+	document.getElementById('head').innerHTML = "The opponent has won...";
+  document.getElementById('select').innerHTML = "Better luck next Time!";
+  
+  document.getElementById('move1').innerHTML = 'G';
+  document.getElementById('move2').innerHTML = 'G';
+  document.getElementById('move3').innerHTML = 'W';
+  document.getElementById('move4').innerHTML = 'P';
+  document.getElementById('move5').innerHTML = '!';
+  
+  gameover = true;
+  asyncCheck = 1;
+  board = -1;
+  //console.log("playerwin is the problem?");
   butto = -1
 }

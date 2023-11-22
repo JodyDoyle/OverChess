@@ -7,10 +7,10 @@ function applypoison(cord)
   {
   	if(pieces[i] == cord)
     {
-    	console.log("Poison DOES get applied to my pieces.")
-      console.log("pstatus[0][" + i + "] = " + pstatus[0][i]);
+    	//console.log("Poison DOES get applied to my pieces.")
+      //console.log("pstatus[0][" + i + "] = " + pstatus[0][i]);
     	pstatus[0][i] += 2;
-      console.log("pstatus[0][" + i + "] = " + pstatus[0][i]);
+      //console.log("pstatus[0][" + i + "] = " + pstatus[0][i]);
       b = true;
       break;
     }
@@ -45,18 +45,19 @@ function applypoisondmg()
   var str = '';
   while(i < 5)
   {
-  	console.log("poison array[" + i + "] = " + poisonarray[i]);
-      console.log("health[" + i + "] = " + health[i]);
-      console.log("pieces[" + i + "] = " + pieces[i]);
+  	//console.log("poison array[" + i + "] = " + poisonarray[i]);
+    //console.log("health[" + i + "] = " + health[i]);
+    //console.log("pieces[" + i + "] = " + pieces[i]);
   	if(poisonarray[i] > 0)
     {
-    	console.log("poison array[" + i + "] = " + poisonarray[i]);
-      console.log("health[" + i + "] = " + health[i]);
-      console.log("pieces[" + i + "] = " + pieces[i]);
+    	//console.log("poison array[" + i + "] = " + poisonarray[i]);
+      //console.log("health[" + i + "] = " + health[i]);
+      //console.log("pieces[" + i + "] = " + pieces[i]);
     	health[i] -= 25;
       pstatus[0][i]--;
       str = document.getElementById('head').innerHTML;
       document.getElementById('head').innerHTML = party[i] + " was hurt by poison!";
+      pladamage();
       sleep(2000).then(() => { document.getElementById('head').innerHTML = str; });
     }
     i++;
@@ -73,6 +74,7 @@ function applypoisondmg()
       ostatus[0][i]--;
       str = document.getElementById('head').innerHTML;
       document.getElementById('head').innerHTML = oparty[i] + " was hurt by poison!";
+      opdamage();
       sleep(2000).then(() => { document.getElementById('head').innerHTML = str; });
     }
     i++;

@@ -37,6 +37,7 @@ function opdeath(x)
   console.log("The value of x is: " + x);
 	document.getElementById(opieces[x]).innerHTML = '';
   opieces[x] = '-';
+  ohealth[x] = '-';
   document.getElementById('head').innerHTML = oparty[x] + " has died!";
   
   var b = true;
@@ -48,7 +49,7 @@ function opdeath(x)
   console.log("The value of ohealth[3] is: " + ohealth[3]);
   console.log("The value of ohealth[4] is: " + ohealth[4]);
   
-  // This loop checks to see if everyon on the opponent's team is dead
+  // This loop checks to see if everyone on the opponent's team is dead
   while(i<5)
   {
   	
@@ -67,6 +68,84 @@ function opdeath(x)
   if(b)
   {
   	setTimeout(playerwin, 1800);
+  }
+  else
+  {
+  	asyncCheck = 1;
+  }
+}
+
+
+function pladamage()
+{
+  var bool = false;
+  /*
+  console.log("The value of opieces[0] = " + opieces[0]);
+  console.log("The value of opieces[1] = " + opieces[1]);
+  console.log("The value of opieces[2] = " + opieces[2]);
+  console.log("The value of opieces[3] = " + opieces[3]);
+  console.log("The value of opieces[4] = " + opieces[4]);
+  */
+
+  console.log("We got to the pladamage function");
+  
+	i = 0;
+  while(i<5)
+  {
+  	if(health[i] != '-')
+    {
+    	if(health[i] <= 0)
+      {
+      	pladeath(i);
+        bool = true;
+      }
+    }
+    i++;
+  }
+  if(!bool)
+  {
+  	asyncCheck = 1;
+  }
+}
+
+function pladeath(x)
+{
+  console.log("We got to the pladeath() function!");
+  console.log("The value of pieces[x] = " + pieces[x]);
+  console.log("The value of x is: " + x);
+	document.getElementById(pieces[x]).innerHTML = '';
+  pieces[x] = '-';
+  health[x] = '-';
+  document.getElementById('head').innerHTML = party[x] + " has died!";
+  
+  var b = true;
+  var i = 0;
+  
+  console.log("The value of health[0] is: " + health[0]);
+  console.log("The value of health[1] is: " + health[1]);
+  console.log("The value of health[2] is: " + health[2]);
+  console.log("The value of health[3] is: " + health[3]);
+  console.log("The value of health[4] is: " + health[4]);
+  
+  // This loop checks to see if everyone on the opponent's team is dead
+  while(i<5)
+  {
+  	
+  	if(health[i] > 0)
+    {
+    	//console.log("The value of ohealth[i] is: " + ohealth[i]);
+      //console.log("The value of i is: " + i);
+    	b = false;
+      break;
+    }
+    i++;
+  }
+  
+  console.log("The value of b is: " + b);
+  
+  if(b)
+  {
+  	setTimeout(opponentwin, 1800);
   }
   else
   {
