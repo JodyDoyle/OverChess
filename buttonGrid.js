@@ -127,22 +127,10 @@ function gridclicked(thiss)
   	display(thiss);
   }
 	
-  else if(board == 3) // For when a creature has used bite.
+  else if(board >= 3) // For when a creature has used bite.
   {
-  	
-  }
-  
-  else if(board == 4) // For when a creature has used slap.
-  {
-  	boardslap(thiss);
-  }
-  else if(board == 5) // For when a creature has used firebreath
-  {
-  	boardfirebreath(thiss);
-  }
-  else if(board == 6) // For when a creature has used slither
-  {
-  	boardslither(thiss)
+  	var callback = 'board' + nmoveclicked;
+    movetofunction(callback, thiss);
   }
   else if (board == -1)
   {

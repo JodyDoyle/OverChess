@@ -128,3 +128,26 @@ Creature ideas:
 - Creature that gets a buff from being closs to the player
 
 - Creature that changes form based on proximity to the player
+
+
+
+What needs to be done:
+- I need to program all of the new moves I have added to the game.
+- I need to fix the bug where the game goes to the player's turn before all of the poison damage messages are finished.
+- I need to program all of the traits into the game.
+- I need to make sure the game can function in a best case scenario.
+- I need to fix as many bugs with the gameflow as possible.
+
+
+New Moves:
+- Rocket Blast
+- Walk
+- Knock
+- Shoot Arrow
+- Dash
+- Cleave
+- Prong
+- Throw Iron Bar
+- Shock
+- Queen's Move
+- Dagger Slash

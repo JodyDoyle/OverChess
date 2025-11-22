@@ -82,6 +82,15 @@ function oturn()
     case 1:
       tempcord = 'D4'
       break;
+    case 2:
+      tempcord = 'A5'
+      break;
+    case 3:
+      tempcord = 'B4'
+      break;
+    case 4:
+      tempcord = 'E5'
+      break;
     default:
       // Do nothing?
   }
@@ -99,9 +108,14 @@ function oturn()
     ohealth[opiecescount-1] = np.Health;
 	});
   
-  if(piecescount == partynumber)
+  console.log("The value of piecescount is " + piecescount);
+  console.log("The value of party.length is " + party.length);
+  if(piecescount == party.length)
   {
     board = 1;
+    //console.log("We are just gonna go to display and go to pturns() now.")
+    //display(opieces[opiecescount-1]);
+    pturns();
   }
   else
   {
@@ -109,8 +123,7 @@ function oturn()
   }
   
      
-  display(opieces[opiecescount-1]);
-  pturns();
+  
   
 }
 

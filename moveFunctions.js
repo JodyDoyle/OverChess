@@ -198,8 +198,8 @@ function move(cord)
   }
   else
   {
+    document.getElementById(newcord).innerHTML = document.getElementById(cord).innerHTML;
   	document.getElementById(cord).innerHTML = '';
-    document.getElementById(newcord).innerHTML = selected;
     pieces[pieces.indexOf(cord)] = newcord;
     document.getElementById('head').innerHTML = 
     'Please wait for the opponent to select a move...';
@@ -223,6 +223,7 @@ function slap(cord)
     
     disappearButtons();
     appear('cancel');
+    nmoveclicked = 'slap'
   
   	board = 4;
     cancelCheck = 1;
@@ -245,6 +246,7 @@ function firebreath(cord)
     
   disappearButtons();
   appear('cancel');
+  nmoveclicked = 'firebreath';
   
   board = 5;
   cancelCheck = 2;
@@ -266,6 +268,7 @@ function slither(cord)
     
   disappearButtons();
   appear('cancel');
+  nmoveclicked = 'slither';
   
   board = 6;
   cancelCheck = 3;
@@ -277,10 +280,34 @@ function unslither()
 	loopcalcgrid(actualtileselected, 2, makegrey)
 }
 
+function walk(cord)
+{
+  {
+    if(pieces.includes(cord))
+    {
+      document.getElementById('head').innerHTML = 
+      "Where do you wanna walk?";
+      
+      loopcalcgrid(cord, 1, makeorange);
+      
+      disappearButtons();
+      appear('cancel');
+      nmoveclicked = 'walk';
+    
+      board = 5;
+      cancelCheck = 2;
+    }
+    else
+    {
+
+    }
+  }
+}
+
 
 function run(cord)
 {
-  if(platurn)
+  if(pieces.includes(cord)) // Checks whether it is the player's turn
   {
     calcgridH(cord, 2, makeorange);
     calcgridH(cord, -2, makeorange)
@@ -289,7 +316,44 @@ function run(cord)
   }
   else
   {
-    calcgridH(cord, 2, makeorange)
+    loopcalcgrid(cord, 2, addToArray);
+    loopcalcgrid(cord, 1, removeFromArray);
+    var l = gloray.length;
+    if(l>0)
+    {
+      var x = Math.floor(Math.random() * l);
+      document.getElementById(cord).innerHTML = '';
+      document.getElementById(newcord).innerHTML = selected;
+      pieces[pieces.indexOf(cord)] = newcord;
+      document.getElementById('head').innerHTML = 'Please wait for the opponent to select a move...';
+    }
+    
+
+    var corddd = [];
+  	var count = 0;
+  	if(pieces.includes(calcgridV(cord, '-', 1)))
+    {
+    	corddd.push(calcgridV(cord, '-', 1));
+    	count++;
+    }
+    
+    if(pieces.includes(calcgridH(cord, '-', 1)))
+    {
+    	corddd.push(calcgridH(cord, '-', 1));
+    	count++;
+    }
+    
+    if(pieces.includes(calcgridV(cord, '+', 1)))
+    {
+    	corddd.push(calcgridV(cord, '+', 1));
+    	count++;
+    }
+    
+    if(pieces.includes(calcgridH(cord, '+', 1)))
+    {
+    	corddd.push(calcgridH(cord, '+', 1));
+    	count++;
+    }
   }
 }
 

@@ -67,8 +67,8 @@ function display(str)
 
   //console.log("Everything is fine???");
   
-  //console.log("The value of h is " + h);
-  //console.log("The value of t is " + t);
+  console.log("The value of h is " + h);
+  console.log("The value of t is " + t);
   console.log("The value of tra: " + tra);
   var traa = tra.child(t);
   //console.log("Everything is fine???");
